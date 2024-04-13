@@ -1,0 +1,12 @@
+.drawer-filter-account {
+  z-index: 9999;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+  .absolute {
+    opacity: 1
+  }
+
+  .bg-black {
+    opacity: 0.5 !important;
+  }
+}
