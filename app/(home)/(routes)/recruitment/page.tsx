@@ -21,7 +21,7 @@ const OPTION_HEADER = [
   },
 ];
 
-const page = () => {
+const Recruitment = () => {
   const [selectedMenu, setSelectedMenu] = React.useState("ĐĂNG KÝ TRỰC TIẾP");
   const [isOpenModalForm, setIsOpenModalForm] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -210,4 +210,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Recruitment;

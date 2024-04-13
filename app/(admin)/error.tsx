@@ -1,6 +1,6 @@
 "use client";
 
-const LandingError = () => {
+const ErrorPage = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <img src="/something_wrong.svg" alt="Error" className="w-80 h-auto mb-2" />
@@ -11,4 +11,4 @@ const LandingError = () => {
   );
 };
 
-export default LandingError;
+export default ErrorPage;

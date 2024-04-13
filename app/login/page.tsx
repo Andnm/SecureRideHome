@@ -7,7 +7,7 @@ import AdminSpinnerLoading from "@/src/components/loading/AdminSpinnerLoading/pa
 import SpinnerLoading from "@/src/components/loading/SpinnerLoading/page";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -115,4 +115,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default LoginPage;
