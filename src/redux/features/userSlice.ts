@@ -43,11 +43,13 @@ export const createDriverAccountByAdmin = createAsyncThunk(
   "user/createDriverAccountByAdmin",
   async (dataBody: any, thunkAPI) => {
     try {
+      console.log("dataBody", dataBody);
+      console.log("getConfigHeader", getConfigHeader());
       const response = await http.post<any>(
         `/api/Driver/RegisterByAdmin`,
         dataBody,
         getConfigHeader()
-      );
+      );  
 
       return response.data;
     } catch (error) {
@@ -58,8 +60,6 @@ export const createDriverAccountByAdmin = createAsyncThunk(
     }
   }
 );
-
-
 
 export const userSlice = createSlice({
   name: "user",

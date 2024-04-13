@@ -34,6 +34,8 @@
 .react-datepicker-wrapper .react-datepicker__input-container input {
   padding: 10px 8px 6px 35px !important;
   display: flex;
+  height: 55px;
+  width: 400px;
 }
 
 @media (min-width: 1200px) {

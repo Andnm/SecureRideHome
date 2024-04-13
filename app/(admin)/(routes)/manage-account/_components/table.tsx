@@ -53,6 +53,7 @@ const TABLE_HEAD = [
   { name: "Giới tính", key: "gender" },
   { name: "Ngày sinh", key: "dob" },
   { name: "Trạng thái", key: "supportStatus" },
+  { name: "Vai trò", key: "role" },
   { name: "", key: "" },
 ];
 
@@ -135,8 +136,9 @@ const SupportTable: React.FC<SupportTableProps> = ({
                     <div className="flex items-center gap-3">
                       <Avatar
                         src={
-                          user?.avatar ||
-                          generateFallbackAvatar(user?.name || user?.email)
+                          user?.avatar
+                            ? `data:image/png;base64,${user?.avatar}`
+                            : generateFallbackAvatar(user?.name || user?.email)
                         }
                         alt={user?.name}
                         size="sm"
@@ -168,6 +170,10 @@ const SupportTable: React.FC<SupportTableProps> = ({
                   </td>
 
                   <StatusCell status={"Active"} classes={classes} />
+
+                  <td className={classes}>
+                    <InfoText>{user?.role}</InfoText>
+                  </td>
 
                   <td className={classes}>
                     <PopoverOption solutions={POPOVER_OPTION} />

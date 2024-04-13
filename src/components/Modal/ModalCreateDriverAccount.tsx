@@ -7,6 +7,19 @@ import ThirdStageCreate from "./_components/ThirdStageCreate";
 import SpinnerLoading from "../loading/SpinnerLoading/page";
 
 import "./style.scss";
+import { useAppDispatch } from "@/src/redux/store";
+import { createDriverAccountByAdmin } from "@/src/redux/features/userSlice";
+import toast from "react-hot-toast";
+import AdminSpinnerLoading from "../loading/AdminSpinnerLoading/page";
+import {
+  createIdentityCardByAdmin,
+  createIdentityCardImageByAdmin,
+} from "@/src/redux/features/identityCard";
+import {
+  createDrivingLicenseForDriverByAdmin,
+  createDrivingLicenseImgForDriver,
+} from "@/src/redux/features/drivingLicense";
+import { convertToVietnamDate } from "@/src/utils/handleFunction";
 
 interface ModalProps {
   open: boolean;
@@ -52,8 +65,9 @@ export default function ModalCreateDriverAccount({
     email: "",
     phoneNumber: "",
     address: "",
-    gender: "",
+    gender: "Male",
     dob: "",
+    // file: "",
   });
 
   const [formIdentityData, setFormIdentityData] = useState({
@@ -71,14 +85,14 @@ export default function ModalCreateDriverAccount({
   const [formIdentityFrontImageData, setFormIdentityFrontImageData] = useState({
     identityCardId: "",
     isFront: true,
-    file: "",
+    // file: "",
   });
 
   const [formIdentityBehindImageData, setFormIdentityBehindImageData] =
     useState({
       identityCardId: "",
       isFront: false,
-      file: "",
+      // file: "",
     });
 
   const [formDlcData, setFormDlcData] = useState({
@@ -90,13 +104,13 @@ export default function ModalCreateDriverAccount({
   const [formDlcFrontImgData, setFormDlcFrontImgData] = useState({
     drivingLicenseId: "",
     isFront: true,
-    file: "",
+    // file: "",
   });
 
   const [formDlcBehindImgData, setFormDlcBehindImgData] = useState({
     drivingLicenseId: "",
     isFront: false,
-    file: "",
+    // file: "",
   });
 
   const [stageEnabled, setStageEnabled] = useState<Record<number, boolean>>({
@@ -104,6 +118,8 @@ export default function ModalCreateDriverAccount({
     2: false,
     3: false,
   });
+
+  const dispatch = useAppDispatch();
 
   const [currentStage, setCurrentStage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -173,6 +189,106 @@ export default function ModalCreateDriverAccount({
         );
       default:
         return null;
+    }
+  };
+
+  const handleCallApiCreateDriverAccountFlow = async () => {
+    console.log("come here");
+
+    setIsLoading(true);
+
+    try {
+      const dataCreateInfo = {
+        ...formInfoData,
+        userName: formInfoData.email,
+        dob: convertToVietnamDate(formInfoData.dob),
+      };
+
+      const resCreateInfo = await dispatch(
+        createDriverAccountByAdmin(dataCreateInfo)
+      );
+      console.log("resCreateInfo", resCreateInfo);
+
+      if (createDriverAccountByAdmin.rejected.match(resCreateInfo)) {
+        console.log("error bước 1", resCreateInfo.payload);
+        toast.error("Có lỗi xảy ra ở bước 1");
+        return;
+      }
+
+      //identity card
+      const dataCreateIdentity = {
+        driverId: resCreateInfo.payload.id,
+        dataBody: {
+          ...formIdentityData,
+          dob: convertToVietnamDate(formIdentityData.dob),
+          expiredDate: convertToVietnamDate(formIdentityData.expiredDate),
+        },
+      };
+
+      const resCreateIdentity = await dispatch(
+        createIdentityCardByAdmin(dataCreateIdentity)
+      );
+      console.log("resCreateIdentity", resCreateIdentity);
+
+      const dataCreateIdentityFrontImage = {
+        ...formIdentityFrontImageData,
+        identityCardId: resCreateIdentity.payload.id,
+      };
+
+      const resCreateIdentityFrontImage = await dispatch(
+        createIdentityCardImageByAdmin(dataCreateIdentityFrontImage)
+      );
+      console.log("resCreateIdentityFrontImage", resCreateIdentityFrontImage);
+
+      const dataCreateIdentityBehindImage = {
+        ...formIdentityBehindImageData,
+        identityCardId: resCreateIdentity.payload.id,
+      };
+
+      const resCreateIdentityBehindImage = await dispatch(
+        createIdentityCardImageByAdmin(dataCreateIdentityBehindImage)
+      );
+      console.log("resCreateIdentityBehindImage", resCreateIdentityBehindImage);
+
+      //driving license
+      const dataCreateDrivingLicense = {
+        driverId: resCreateInfo.payload.id,
+        dataBody: {
+          ...formDlcData,
+          issueDate: convertToVietnamDate(formDlcData.issueDate),
+          expriedDate: convertToVietnamDate(formDlcData.expriedDate),
+        },
+      };
+
+      const resCreateDrivingLicense = await dispatch(
+        createDrivingLicenseForDriverByAdmin(dataCreateDrivingLicense)
+      );
+      console.log("resCreateDrivingLicense", resCreateDrivingLicense);
+
+      const dataCreateDlcFrontImage = {
+        ...formDlcFrontImgData,
+        drivingLicenseId: resCreateDrivingLicense.payload.id,
+      };
+
+      const resCreateDlcFrontImage = await dispatch(
+        createDrivingLicenseImgForDriver(dataCreateDlcFrontImage)
+      );
+      console.log("resCreateDlcFrontImage", resCreateDlcFrontImage);
+
+      const dataCreateDlcBehindImage = {
+        ...formDlcBehindImgData,
+        drivingLicenseId: resCreateDrivingLicense.payload.id,
+      };
+
+      const resCreateDlcBehindImage = await dispatch(
+        createDrivingLicenseImgForDriver(dataCreateDlcBehindImage)
+      );
+      console.log("resCreateDlcBehindImage", resCreateDlcBehindImage);
+    } catch (error) {
+      console.error("Error occurred:", error);
+      toast.error("Có lỗi xảy ra khi tạo tài khoản!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -260,14 +376,14 @@ export default function ModalCreateDriverAccount({
                         {currentStage === 3 && (
                           <button
                             className="font-semibold btn-continue px-4 py-2"
-                            onClick={() => {}}
+                            onClick={handleCallApiCreateDriverAccountFlow}
                           >
                             Xác nhận
                           </button>
                         )}
                       </div>
 
-                      {isLoading && <SpinnerLoading />}
+                      {isLoading && <AdminSpinnerLoading />}
                     </div>
                   </div>
                 </Dialog.Panel>
