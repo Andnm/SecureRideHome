@@ -50,7 +50,7 @@ const ThirdStageCreate: React.FC<ThirdStageProps> = ({
     const file = acceptedFiles[0];
     setFormDlcFrontImgData({
       ...formDlcFrontImgData,
-      // file: file,
+      file: file,
     });
     previewFrontImage(file);
   };
@@ -86,7 +86,7 @@ const ThirdStageCreate: React.FC<ThirdStageProps> = ({
     setImageFront("");
     setFormDlcFrontImgData({
       ...formDlcFrontImgData,
-      // file: "",
+      file: "",
     });
   };
 
@@ -97,7 +97,7 @@ const ThirdStageCreate: React.FC<ThirdStageProps> = ({
     const file = acceptedFiles[0];
     setFormDlcBehindImgData({
       ...formDlcBehindImgData,
-      // file: file,
+      file: file,
     });
     previewBehindImage(file);
   };
@@ -133,7 +133,7 @@ const ThirdStageCreate: React.FC<ThirdStageProps> = ({
     setImageBehind("");
     setFormDlcBehindImgData({
       ...formDlcBehindImgData,
-      // file: "",
+      file: "",
     });
   };
 
