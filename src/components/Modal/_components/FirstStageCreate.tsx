@@ -38,7 +38,7 @@ const FirstStageCreate: React.FC<FirstStageProps> = ({
     const file = acceptedFiles[0];
     setFormInfoData({
       ...formInfoData,
-      file: file,
+      // file: file,
     });
     previewImage(file);
   };
@@ -74,7 +74,7 @@ const FirstStageCreate: React.FC<FirstStageProps> = ({
     setSupportImage("");
     setFormInfoData({
       ...formInfoData,
-      file: "",
+      // file: "",
     });
   };
 

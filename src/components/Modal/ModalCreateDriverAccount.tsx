@@ -67,7 +67,7 @@ export default function ModalCreateDriverAccount({
     address: "",
     gender: "Male",
     dob: "",
-    file: "",
+    // file: "",
   });
 
   const [formIdentityData, setFormIdentityData] = useState({
@@ -85,14 +85,14 @@ export default function ModalCreateDriverAccount({
   const [formIdentityFrontImageData, setFormIdentityFrontImageData] = useState({
     identityCardId: "",
     isFront: true,
-    file: "",
+    // file: "",
   });
 
   const [formIdentityBehindImageData, setFormIdentityBehindImageData] =
     useState({
       identityCardId: "",
       isFront: false,
-      file: "",
+      // file: "",
     });
 
   const [formDlcData, setFormDlcData] = useState({
@@ -104,13 +104,13 @@ export default function ModalCreateDriverAccount({
   const [formDlcFrontImgData, setFormDlcFrontImgData] = useState({
     drivingLicenseId: "",
     isFront: true,
-    file: "",
+    // file: "",
   });
 
   const [formDlcBehindImgData, setFormDlcBehindImgData] = useState({
     drivingLicenseId: "",
     isFront: false,
-    file: "",
+    // file: "",
   });
 
   const [stageEnabled, setStageEnabled] = useState<Record<number, boolean>>({
