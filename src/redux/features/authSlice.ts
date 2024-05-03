@@ -6,14 +6,13 @@ import {
   saveTokenToSessionStorage,
   removeTokenFromSessionStorage,
   decodeTokenToUser,
-  getConfigHeader,
+  getJsonConfigHeader,
 } from "../utils/handleToken";
 
 import {
   saveUserToSessionStorage,
   removeUserFromSessionStorage,
 } from "../utils/handleUser";
-import { OtpType } from "@/src/types/otp.type";
 import {
   getOtpFromSessionStorage,
   removeOtpFromSessionStorage,

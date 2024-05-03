@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import http from "../utils/https";
 import { UserType } from "@/src/types/user.type";
 import {
-  getConfigHeader,
+  getFormDataConfigHeader,
+  getJsonConfigHeader,
   getTokenFromSessionStorage,
 } from "../utils/handleToken";
 import { ErrorType } from "@/src/types/error.type";
@@ -26,7 +27,7 @@ export const getAllUserByAdmin = createAsyncThunk(
     try {
       const response = await http.get<any>(
         `/api/Customer/GetUserByAdmin?PageIndex=${pageIndex}&PageSize=${pageSize}&SortKey=DateCreated&SortOrder=DESC`,
-        getConfigHeader()
+        getJsonConfigHeader()
       );
 
       return response.data;
@@ -44,16 +45,15 @@ export const createDriverAccountByAdmin = createAsyncThunk(
   async (dataBody: any, thunkAPI) => {
     try {
       console.log("dataBody", dataBody);
-      console.log("getConfigHeader", getConfigHeader());
       const response = await http.post<any>(
         `/api/Driver/RegisterByAdmin`,
         dataBody,
-        getConfigHeader()
-      );  
+        getFormDataConfigHeader()
+      );
 
       return response.data;
     } catch (error) {
-      // console.log('error', error)
+      console.log("error", error);
       return thunkAPI.rejectWithValue(
         (error as ErrorType)?.response?.data?.message
       );

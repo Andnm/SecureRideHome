@@ -22,7 +22,7 @@ const ManageSupport = () => {
     setCurrentPage(newPage);
   };
 
-  console.log("dataTable1", dataTable);
+  console.log("data support", dataTable);
 
   React.useEffect(() => {
     const dataBody = {

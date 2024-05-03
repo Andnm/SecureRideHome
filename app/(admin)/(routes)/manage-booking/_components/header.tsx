@@ -7,17 +7,17 @@ import { MdFilterList } from "react-icons/md";
 import { MdOutlineClear } from "react-icons/md";
 import { GrPowerReset } from "react-icons/gr";
 
+
 import { CardHeader, Typography } from "@material-tailwind/react";
 import { cn } from "@/lib/utils";
-import ModalCreateDriverAccount from "@/src/components/Modal/ModalCreateDriverAccount";
 
-interface ManageAccountHeaderProps {
+interface ManageBookingHeaderProps {
   onSearchChange?: any;
   filterOption?: any;
   setFilterOption?: any;
 }
 
-const ManageAccountHeader: React.FC<ManageAccountHeaderProps> = ({
+const ManageBookingHeader: React.FC<ManageBookingHeaderProps> = ({
   onSearchChange,
   filterOption,
   setFilterOption,
@@ -25,8 +25,6 @@ const ManageAccountHeader: React.FC<ManageAccountHeaderProps> = ({
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const openDrawerAction = () => setOpenDrawer(true);
   const closeDrawerAction = () => setOpenDrawer(false);
-  const [isOpenModalCreateDriverAccount, setIsOpenModalCreateDriverAccount] =
-    React.useState(false);
 
   return (
     <>
@@ -34,19 +32,10 @@ const ManageAccountHeader: React.FC<ManageAccountHeaderProps> = ({
         <div className="mb-8 flex items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
-              Quản lý tài khoản
+              Quản lý chuyến đi
             </Typography>
           </div>
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <div
-              className="flex items-center justify-center gap-2 cursor-pointer px-4 py-2"
-              style={{ borderRadius: "7px", borderWidth: "1px" }}
-              onClick={() => setIsOpenModalCreateDriverAccount(true)}
-            >
-              <MdPlaylistAdd />
-              <p className="text-sm">Tạo tài khoản</p>
-            </div>
-          </div>
+         
         </div>
 
         <div className="flex flex-col items-center  gap-4 md:flex-row">
@@ -99,20 +88,8 @@ const ManageAccountHeader: React.FC<ManageAccountHeaderProps> = ({
           setFilterOption={setFilterOption}
         />
       )} */}
-
-      {isOpenModalCreateDriverAccount && (
-        <ModalCreateDriverAccount
-          open={isOpenModalCreateDriverAccount}
-          actionClose={() => setIsOpenModalCreateDriverAccount(false)}
-          buttonClose={"Hủy"}
-          body={"body"}
-          actionConfirm={() => setIsOpenModalCreateDriverAccount(false)}
-          buttonConfirm={"Xác nhận"}
-          status={"Pending"}
-        />
-      )}
     </>
   );
 };
 
-export default ManageAccountHeader;
+export default ManageBookingHeader;

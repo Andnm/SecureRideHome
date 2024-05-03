@@ -28,7 +28,7 @@ const ThirdStageCreate: React.FC<ThirdStageProps> = ({
   const handleOnChange = (e: any) => {
     const { name, value } = e.target;
 
-    if (name === "identityCardNumber") {
+    if (name === "drivingLicenseNumber") {
       if (/^\d*$/.test(value)) {
         setFormDlcData({
           ...formDlcData,
@@ -50,7 +50,7 @@ const ThirdStageCreate: React.FC<ThirdStageProps> = ({
     const file = acceptedFiles[0];
     setFormDlcFrontImgData({
       ...formDlcFrontImgData,
-      // file: file,
+      file: file,
     });
     previewFrontImage(file);
   };
@@ -86,7 +86,7 @@ const ThirdStageCreate: React.FC<ThirdStageProps> = ({
     setImageFront("");
     setFormDlcFrontImgData({
       ...formDlcFrontImgData,
-      // file: "",
+      file: "",
     });
   };
 
@@ -97,7 +97,7 @@ const ThirdStageCreate: React.FC<ThirdStageProps> = ({
     const file = acceptedFiles[0];
     setFormDlcBehindImgData({
       ...formDlcBehindImgData,
-      // file: file,
+      file: file,
     });
     previewBehindImage(file);
   };
@@ -133,13 +133,23 @@ const ThirdStageCreate: React.FC<ThirdStageProps> = ({
     setImageBehind("");
     setFormDlcBehindImgData({
       ...formDlcBehindImgData,
-      // file: "",
+      file: "",
     });
   };
 
   return (
     <div className="stage-container flex flex-col justify-center items-center">
       <div className="w-1/2">
+        <InputTextField
+          label="Số GPLX"
+          name="drivingLicenseNumber"
+          value={formDlcData.drivingLicenseNumber}
+          handleOnChange={handleOnChange}
+          required={true}
+        />
+      </div>
+
+      <div className="w-1/2 mt-4">
         <InputTextField
           label="Hạng bằng lái xe"
           name="type"

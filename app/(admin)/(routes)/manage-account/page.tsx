@@ -6,10 +6,10 @@ import { useAppDispatch, useAppSelector } from "@/src/redux/store";
 import AdminSpinnerLoading from "@/src/components/loading/AdminSpinnerLoading/page";
 import { getAllUserByAdmin } from "@/src/redux/features/userSlice";
 import toast from "react-hot-toast";
-import ManageSupportHeader from "./_components/header";
+import ManageAccountHeader from "./_components/header";
 import SupportTable from "./_components/table";
 
-const ManageSupport = () => {
+const ManageAccount = () => {
   const dispatch = useAppDispatch();
   const [dataTable, setDataTable] = React.useState<any[]>([]);
   const [originalDataTable, setOriginalDataTable] = React.useState<any[]>([]);
@@ -22,7 +22,7 @@ const ManageSupport = () => {
     setCurrentPage(newPage);
   };
 
-  console.log("dataTable1", dataTable);
+  // console.log("dataTable1", dataTable);
 
   React.useEffect(() => {
     const dataBody = {
@@ -42,7 +42,7 @@ const ManageSupport = () => {
 
   return (
     <Card className="p-4 manager-project">
-      <ManageSupportHeader />
+      <ManageAccountHeader />
 
       {loadingSupport ? (
         <AdminSpinnerLoading />
@@ -62,4 +62,4 @@ const ManageSupport = () => {
   );
 };
 
-export default ManageSupport;
+export default ManageAccount;

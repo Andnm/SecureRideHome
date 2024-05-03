@@ -6,14 +6,14 @@ import {
   saveTokenToSessionStorage,
   removeTokenFromSessionStorage,
   decodeTokenToUser,
-  getConfigHeader,
+  getJsonConfigHeader,
+  getFormDataConfigHeader,
 } from "../utils/handleToken";
 
 import {
   saveUserToSessionStorage,
   removeUserFromSessionStorage,
 } from "../utils/handleUser";
-import { OtpType } from "@/src/types/otp.type";
 import {
   getOtpFromSessionStorage,
   removeOtpFromSessionStorage,
@@ -40,12 +40,12 @@ export const createDrivingLicenseForDriverByAdmin = createAsyncThunk(
       const response = await http.post<any>(
         `/api/DrivingLicense/ByAdmin/${driverId}`,
         dataBody,
-        getConfigHeader()
+        getJsonConfigHeader()
       );
 
       return response.data;
     } catch (error) {
-      // console.log('error', error)
+      console.log('error dlc', error)
       return thunkAPI.rejectWithValue(
         (error as ErrorType)?.response?.data?.message
       );
@@ -60,12 +60,12 @@ export const createDrivingLicenseImgForDriver = createAsyncThunk(
       const response = await http.post<any>(
         `/api/DrivingLicense/ByAdmin/DrivingLicenseImage`,
         data,
-        getConfigHeader()
+        getFormDataConfigHeader(),
       );
 
       return response.data;
     } catch (error) {
-      // console.log('error', error)
+      console.log('error dlc img', error)
       return thunkAPI.rejectWithValue(
         (error as ErrorType)?.response?.data?.message
       );

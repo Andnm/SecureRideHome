@@ -4,13 +4,14 @@ import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 import authReducer from "./features/authSlice";
 import userReducer from "./features/userSlice";
 import supportReducer from "./features/supportSlice";
+import bookingReducer from "./features/bookingSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     support: supportReducer,
     user: userReducer,
-    
+    booking: bookingReducer
   },
 });
 

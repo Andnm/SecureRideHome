@@ -14,7 +14,7 @@ import {
   Avatar,
 } from "@material-tailwind/react";
 import {
-  formatDate,
+  convertToVietnamTime,
   generateFallbackAvatar,
   getColorByProjectStatus,
   sortData,
@@ -48,12 +48,13 @@ interface SupportTableProps {
 }
 
 const TABLE_HEAD = [
-  { name: "Người gửi", key: "fullname" },
-  { name: "Số điện thoại", key: "phoneNumber" },
-  { name: "Giới tính", key: "gender" },
-  { name: "Ngày sinh", key: "dob" },
-  { name: "Trạng thái", key: "supportStatus" },
-  { name: "Vai trò", key: "role" },
+  { name: "Khách hàng", key: "customer.userName" },
+  { name: "Tài xế", key: "driver.name" },
+  { name: "Nơi đặt", key: "pickupAddress" },
+  { name: "Thời gian đặt", key: "pickUpTime" },
+  { name: "Nơi trả khách", key: "dropOffAddress" },
+  { name: "Thời gian trả khách", key: "dropOffTime" },
+  { name: "Trạng thái", key: "status" },
   { name: "", key: "" },
 ];
 
@@ -61,12 +62,6 @@ const POPOVER_OPTION = [
   {
     name: "Chi tiết",
     icon: <BiDetail />,
-    onClick: () => {},
-  },
-
-  {
-    name: "Xóa tài khoản",
-    icon: <MdOutlinePersonRemove />,
     onClick: () => {},
   },
 ];
@@ -81,10 +76,6 @@ const SupportTable: React.FC<SupportTableProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   console.log("dataTable", dataTable);
-  //quản lý thông tin hiện ra
-  const [selectedSupport, setSelectedSupport] = React.useState<any | null>(
-    null
-  );
 
   return (
     <>
@@ -124,7 +115,7 @@ const SupportTable: React.FC<SupportTableProps> = ({
             </tr>
           </thead>
 
-          {dataTable?.map((user: any, index) => {
+          {dataTable?.map((booking: any, index) => {
             const isLast = index === dataTable.length - 1;
 
             const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
@@ -132,48 +123,98 @@ const SupportTable: React.FC<SupportTableProps> = ({
             return (
               <tbody key={index}>
                 <tr>
+                  {/* customer */}
                   <td className={classes}>
                     <div className="flex items-center gap-3">
                       <Avatar
                         src={
-                          user?.avatar
-                            ? `data:image/png;base64,${user?.avatar}`
-                            : generateFallbackAvatar(user?.name || user?.email)
+                          booking?.searchRequest?.customer?.avatar
+                            ? `data:image/png;base64,${booking?.searchRequest?.customer?.avatar}`
+                            : generateFallbackAvatar(
+                                booking?.searchRequest?.customer?.name ||
+                                  booking?.searchRequest?.customer?.email
+                              )
                         }
-                        alt={user?.name}
+                        alt={booking?.searchRequest?.customer?.name}
                         size="sm"
                         className="object-cover"
                       />
                       <div className="flex flex-col">
-                        <InfoText>{user?.name}</InfoText>
+                        <InfoText>
+                          {booking?.searchRequest?.customer?.name}
+                        </InfoText>
+
+                        <InfoText>
+                          {booking?.searchRequest?.customer?.phoneNumber}
+                        </InfoText>
 
                         <InfoText className="opacity-70">
-                          {truncateString(user?.email, 35)}
+                          {truncateString(
+                            booking?.searchRequest?.customer?.email,
+                            35
+                          )}
+                        </InfoText>
+                      </div>
+                    </div>
+                  </td>
+
+                  {/* driver */}
+                  <td className={classes}>
+                    <div className="flex items-center gap-3">
+                      <Avatar
+                        src={
+                          booking?.driver?.avatar
+                            ? `data:image/png;base64,${booking?.driver?.avatar}`
+                            : generateFallbackAvatar(
+                                booking?.driver?.name || booking?.driver?.email
+                              )
+                        }
+                        alt={booking?.driver?.name}
+                        size="sm"
+                        className="object-cover"
+                      />
+                      <div className="flex flex-col">
+                        <InfoText>{booking?.driver?.name}</InfoText>
+
+                        <InfoText>{booking?.driver?.phoneNumber}</InfoText>
+
+                        <InfoText className="opacity-70">
+                          {truncateString(booking?.driver?.email, 35)}
                         </InfoText>
                       </div>
                     </div>
                   </td>
 
                   <td className={classes}>
-                    <InfoText>{user?.phoneNumber}</InfoText>
+                    <InfoText>
+                      {truncateString(
+                        booking?.searchRequest?.pickupAddress,
+                        15
+                      )}
+                    </InfoText>
                   </td>
 
                   <td className={classes}>
-                    {user?.gender ? (
-                      <InfoText>{translateStatusIntoVn(user?.gender)}</InfoText>
-                    ) : (
-                      <InfoText>(Chưa cập nhập)</InfoText>
-                    )}
+                    <InfoText>{convertToVietnamTime(booking?.pickUpTime)}</InfoText>
                   </td>
 
                   <td className={classes}>
-                    <InfoText>{formatDate(user?.dob)}</InfoText>
+                    <InfoText>
+                      {truncateString(
+                        booking?.searchRequest?.dropOffAddress,
+                        20
+                      )}
+                    </InfoText>
                   </td>
 
-                  <StatusCell status={"Active"} classes={classes} />
+                  <td className={classes}>
+                    <InfoText>{convertToVietnamTime(booking?.dropOffTime)}</InfoText>
+                  </td>
+
+                  <StatusCell status={booking?.status} classes={classes} />
 
                   <td className={classes}>
-                    <InfoText>{user?.role}</InfoText>
+                    <InfoText>{booking?.role}</InfoText>
                   </td>
 
                   <td className={classes}>

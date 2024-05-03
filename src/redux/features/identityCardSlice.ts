@@ -6,14 +6,14 @@ import {
   saveTokenToSessionStorage,
   removeTokenFromSessionStorage,
   decodeTokenToUser,
-  getConfigHeader,
+  getJsonConfigHeader,
+  getFormDataConfigHeader,
 } from "../utils/handleToken";
 
 import {
   saveUserToSessionStorage,
   removeUserFromSessionStorage,
 } from "../utils/handleUser";
-import { OtpType } from "@/src/types/otp.type";
 import {
   getOtpFromSessionStorage,
   removeOtpFromSessionStorage,
@@ -40,12 +40,12 @@ export const createIdentityCardByAdmin = createAsyncThunk(
       const response = await http.post<any>(
         `/api/IdentityCard/ByAdmin/${driverId}`,
         dataBody,
-        getConfigHeader()
+        getJsonConfigHeader()
       );
 
       return response.data;
     } catch (error) {
-      // console.log('error', error)
+      console.log('error identity', error)
       return thunkAPI.rejectWithValue(
         (error as ErrorType)?.response?.data?.message
       );
@@ -60,12 +60,12 @@ export const createIdentityCardImageByAdmin = createAsyncThunk(
       const response = await http.post<any>(
         `/api/IdentityCard/IdentityCardImage/ByAdmin`,
         data,
-        getConfigHeader()
+        getFormDataConfigHeader()
       );
 
       return response.data;
     } catch (error) {
-      // console.log('error', error)
+      console.log('error identity image', error)
       return thunkAPI.rejectWithValue(
         (error as ErrorType)?.response?.data?.message
       );

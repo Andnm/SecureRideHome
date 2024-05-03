@@ -69,9 +69,11 @@ export const formatDate = (inputDate: string | undefined) => {
 export const getColorByProjectStatus = (status: string): string => {
   switch (status) {
     case "Pending":
+    case "OnGoing":
       return "bg-blue-200 text-blue-900";
     case "Public":
     case "New":
+    case "Arrived":
       return "bg-violet-200 text-violet-900";
     case "Xác thực":
     case "Processing":
@@ -81,6 +83,8 @@ export const getColorByProjectStatus = (status: string): string => {
     case "Active":
     case "Đang hoạt động":
     case "Solved":
+    case "Accept":
+    case "Complete":
       return "bg-green-200 text-green-900";
     case "Expired":
     case "Đã bị ban":
@@ -90,9 +94,14 @@ export const getColorByProjectStatus = (status: string): string => {
     case "Chưa xác thực":
       return "bg-gray-200 text-gray-900";
     case "Rejected":
+    case "Cancel":
       return "bg-red-200 text-red-900";
+    case "CheckIn":
+    case "CheckOut":
+    case "PayBooking":
+      return "bg-orange-200 text-orange-900";
     default:
-      return "bg-green-200 text-green-900";
+      return "bg-gray-200 text-gray-900";
   }
 };
 
@@ -120,6 +129,24 @@ export const translateStatusIntoVn = (status: string): string => {
       return "Khác";
     case "active":
       return "Đang hoạt động";
+    case "accept":
+      return "Đã chấp nhận";
+    case "accept":
+      return "Đã chấp nhận";
+    case "arrived":
+      return "Đã đến điểm đón";
+    case "checkin":
+      return "Đang chụp xác nhận";
+    case "ongoing":
+      return "Đang di chuyển";
+    case "checkout":
+      return "Đang chụp xác nhận";
+    case "complete":
+      return "Hoàn thành";
+    case "paybooking":
+      return "Đang thanh toán";
+    case "cancel":
+      return "Đã hủy cuốc";
     default:
       return "Không xác định";
   }
@@ -376,21 +403,6 @@ export const removeCommas = (str: string): number => {
   return parseFloat(str.replace(/,/g, ""));
 };
 
-export const extractProjectDates = (inputString: string): any | null => {
-  const regex = /Từ (\d{1,2}\/\d{4}) tới (\d{1,2}\/\d{4})/;
-  const match = inputString.match(regex);
-
-  if (match) {
-    const [, startDate, endDate] = match;
-    return {
-      project_start_date: startDate,
-      project_expected_end_date: endDate,
-    };
-  } else {
-    return null;
-  }
-};
-
 export const convertToVietnamDate = (dateString: string) => {
   const date = new Date(dateString);
 
@@ -401,4 +413,20 @@ export const convertToVietnamDate = (dateString: string) => {
   const vietnamDate = `${year}-${month}-${day}`;
 
   return vietnamDate;
+};
+
+export const convertToVietnamTime = (utcTime: string) => {
+  const dateUtc = new Date(utcTime);
+
+  const vietnamOffset = 7 * 60;
+  const vietnamTime = new Date(dateUtc.getTime() + vietnamOffset * 60000);
+
+  const formattedTime = `${("0" + vietnamTime.getHours()).slice(-2)}:${(
+    "0" + vietnamTime.getMinutes()
+  ).slice(-2)} - ${("0" + vietnamTime.getDate()).slice(-2)}/${(
+    "0" +
+    (vietnamTime.getMonth() + 1)
+  ).slice(-2)}/${vietnamTime.getFullYear()}`;
+
+  return formattedTime;
 };

@@ -36,6 +36,8 @@ import { IoIosArrowDown } from "react-icons/io";
 import { GrTransaction } from "react-icons/gr";
 import { FaBan } from "react-icons/fa6";
 import ModalCreateDriverAccount from "@/src/components/Modal/ModalCreateDriverAccount";
+import { changeSupportStatus } from "@/src/redux/features/supportSlice";
+import ModalConfirm from "@/src/components/Modal/ModalConfirm";
 
 registerLocale("vi", vn);
 setDefaultLocale("vi");
@@ -70,8 +72,43 @@ const SupportTable: React.FC<SupportTableProps> = ({
   const [selectedSupport, setSelectedSupport] = React.useState<any | null>(
     null
   );
+  const [selectedStatus, setSelectedStatus] = React.useState<any | null>(null);
+
   const [isOpenModalCreateDriverAccount, setIsOpenModalCreateDriverAccount] =
     React.useState(false);
+
+  const [isOpenModalConfirmChangeStatus, setIsOpenModalConfirmChangeStatus] =
+    React.useState(false);
+
+  const handleClickChangeStatusOption = (support: any, status: string) => {
+    setSelectedSupport(support);
+    setSelectedStatus(status);
+    setIsOpenModalConfirmChangeStatus(true);
+  };
+
+  const handleCallApiChangeSupportStatus = () => {
+    const dataBody = {
+      supportId: selectedSupport?.id,
+      status: selectedStatus,
+    };
+
+    dispatch(changeSupportStatus(dataBody)).then((result: any) => {
+      if (changeSupportStatus.rejected.match(result)) {
+        toast.error(`${result.payload}`);
+      } else if (changeSupportStatus.fulfilled.match(result)) {
+        const updatedDataTable = dataTable.map((item: any) => {
+          if (item.id === selectedSupport?.id) {
+            return { ...item, supportStatus: selectedStatus };
+          }
+          return item;
+        });
+
+        setDataTable(updatedDataTable);
+        toast.success(`Đổi trạng thái thành công!`);
+        setIsOpenModalConfirmChangeStatus(false);
+      }
+    });
+  };
 
   return (
     <>
@@ -126,13 +163,15 @@ const SupportTable: React.FC<SupportTableProps> = ({
 
             if (
               support.supportType === "Recruitment" &&
-              support.supportStatus === "New"
+              (support.supportStatus === "New" ||
+                support.supportStatus === "InProcess")
             ) {
               POPOVER_OPTION.push({
                 name: "Tạo tài khoản",
                 icon: <IoMdPersonAdd />,
                 onClick: () => {
-                  setIsOpenModalCreateDriverAccount(true)
+                  setSelectedSupport(support);
+                  setIsOpenModalCreateDriverAccount(true);
                 },
               });
             }
@@ -141,21 +180,35 @@ const SupportTable: React.FC<SupportTableProps> = ({
               POPOVER_OPTION.push({
                 name: "Đang tiến hành",
                 icon: <GrTransaction />,
-                onClick: () => {},
+                onClick: () => {
+                  handleClickChangeStatusOption(support, "InProcess");
+                },
               });
             } else if (support.supportStatus === "InProcess") {
               POPOVER_OPTION.push(
                 {
-                  name: "Đánh dấu hoàn thành",
+                  name: "Đánh dấu đã giải quyết",
                   icon: <BiCheck />,
-                  onClick: () => {},
+                  onClick: () => {
+                    handleClickChangeStatusOption(support, "Solved");
+                  },
                 },
                 {
                   name: "Đánh dấu không thể giải quyết",
                   icon: <FaBan />,
-                  onClick: () => {},
+                  onClick: () => {
+                    handleClickChangeStatusOption(support, "CantSolved");
+                  },
                 }
               );
+            } else if (support.supportStatus === "CantSolved") {
+              POPOVER_OPTION.push({
+                name: "Đánh dấu đã giải quyết",
+                icon: <BiCheck />,
+                onClick: () => {
+                  handleClickChangeStatusOption(support, "Solved");
+                },
+              });
             }
 
             return (
@@ -212,10 +265,49 @@ const SupportTable: React.FC<SupportTableProps> = ({
           open={isOpenModalCreateDriverAccount}
           actionClose={() => setIsOpenModalCreateDriverAccount(false)}
           buttonClose={"Hủy"}
-          body={'body'}
+          body={"body"}
           actionConfirm={() => setIsOpenModalCreateDriverAccount(false)}
           buttonConfirm={"Xác nhận"}
           status={"Pending"}
+          selectedSupport={selectedSupport}
+        />
+      )}
+
+      {isOpenModalConfirmChangeStatus && (
+        <ModalConfirm
+          open={isOpenModalConfirmChangeStatus}
+          title={<h2 className="text-2xl font-semibold">Xác nhận hành động</h2>}
+          body={
+            selectedStatus === "InProcess" ? (
+              <span>
+                Bạn có chắc muốn chuyển trạng thái qua{" "}
+                <span className="text-yellow-900 font-bold">
+                  Đang tiến hành
+                </span>
+                ?
+              </span>
+            ) : selectedStatus === "Solved" ? (
+              <span>
+                Bạn có chắc muốn chuyển trạng thái qua{" "}
+                <span className="text-green-900 font-bold">Đã giải quyết</span>?
+              </span>
+            ) : selectedStatus === "CantSolved" ? (
+              <span>
+                Bạn có chắc muốn chuyển trạng thái qua{" "}
+                <span className="text-red-900 font-bold">
+                  Không thể giải quyết
+                </span>
+                ?
+              </span>
+            ) : (
+              "Bạn có chắc muốn thay đổi trạng thái hỗ trợ này?"
+            )
+          }
+          actionClose={() => setIsOpenModalConfirmChangeStatus(false)}
+          buttonClose={"Hủy"}
+          actionConfirm={handleCallApiChangeSupportStatus}
+          buttonConfirm={"Xác nhận"}
+          styleWidth={"max-w-xl"}
         />
       )}
       {loadingUser && <SpinnerLoading />}

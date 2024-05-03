@@ -14,11 +14,11 @@ import AdminSpinnerLoading from "../loading/AdminSpinnerLoading/page";
 import {
   createIdentityCardByAdmin,
   createIdentityCardImageByAdmin,
-} from "@/src/redux/features/identityCard";
+} from "@/src/redux/features/identityCardSlice";
 import {
   createDrivingLicenseForDriverByAdmin,
   createDrivingLicenseImgForDriver,
-} from "@/src/redux/features/drivingLicense";
+} from "@/src/redux/features/drivingLicenseSlice";
 import { convertToVietnamDate } from "@/src/utils/handleFunction";
 
 interface ModalProps {
@@ -31,6 +31,7 @@ interface ModalProps {
   body?: any;
   dataSelected?: any;
   setDataTable?: any;
+  selectedSupport?: any;
 }
 
 export default function ModalCreateDriverAccount({
@@ -43,6 +44,7 @@ export default function ModalCreateDriverAccount({
   body,
   dataSelected,
   setDataTable,
+  selectedSupport,
 }: ModalProps) {
   // const closeByClickBackground = () => {
   //   if (actionClose) {
@@ -59,43 +61,46 @@ export default function ModalCreateDriverAccount({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   };
 
+  console.log("selectedSupport", selectedSupport);
+
   //   Tạo dữ liệu
   const [formInfoData, setFormInfoData] = useState({
-    name: "",
-    email: "",
-    phoneNumber: "",
-    address: "",
+    name: selectedSupport?.fullName ? selectedSupport.fullName : "",
+    email: selectedSupport?.email ? selectedSupport.email : "",
+    phoneNumber: selectedSupport?.phoneNumber ? selectedSupport.phoneNumber : "",
+    address: selectedSupport?.address ? selectedSupport.address : "",
     gender: "Male",
     dob: "",
-    // file: "",
+    file: "",
   });
 
   const [formIdentityData, setFormIdentityData] = useState({
-    fullName: "",
+    fullName: selectedSupport?.fullName ? selectedSupport.fullName : "",
     dob: "",
     gender: "Male",
     nationality: "",
     placeOrigin: "",
-    placeResidence: "",
+    placeResidence: selectedSupport?.address ? selectedSupport.address : "",
     personalIdentification: "",
-    identityCardNumber: "",
+    identityCardNumber: selectedSupport?.identityCardNumber ? selectedSupport.identityCardNumber : "",
     expiredDate: "",
   });
 
   const [formIdentityFrontImageData, setFormIdentityFrontImageData] = useState({
     identityCardId: "",
     isFront: true,
-    // file: "",
+    file: "",
   });
 
   const [formIdentityBehindImageData, setFormIdentityBehindImageData] =
     useState({
       identityCardId: "",
       isFront: false,
-      // file: "",
+      file: "",
     });
 
   const [formDlcData, setFormDlcData] = useState({
+    drivingLicenseNumber: selectedSupport?.drivingLicenseNumber ? selectedSupport.drivingLicenseNumber : "",
     type: "",
     issueDate: "",
     expriedDate: "",
@@ -104,13 +109,13 @@ export default function ModalCreateDriverAccount({
   const [formDlcFrontImgData, setFormDlcFrontImgData] = useState({
     drivingLicenseId: "",
     isFront: true,
-    // file: "",
+    file: "",
   });
 
   const [formDlcBehindImgData, setFormDlcBehindImgData] = useState({
     drivingLicenseId: "",
     isFront: false,
-    // file: "",
+    file: "",
   });
 
   const [stageEnabled, setStageEnabled] = useState<Record<number, boolean>>({
@@ -204,6 +209,7 @@ export default function ModalCreateDriverAccount({
         dob: convertToVietnamDate(formInfoData.dob),
       };
 
+      console.log("dataCreateInfo", dataCreateInfo);
       const resCreateInfo = await dispatch(
         createDriverAccountByAdmin(dataCreateInfo)
       );
@@ -232,7 +238,7 @@ export default function ModalCreateDriverAccount({
 
       const dataCreateIdentityFrontImage = {
         ...formIdentityFrontImageData,
-        identityCardId: resCreateIdentity.payload.id,
+        identityCardId: resCreateIdentity.payload,
       };
 
       const resCreateIdentityFrontImage = await dispatch(
@@ -242,7 +248,7 @@ export default function ModalCreateDriverAccount({
 
       const dataCreateIdentityBehindImage = {
         ...formIdentityBehindImageData,
-        identityCardId: resCreateIdentity.payload.id,
+        identityCardId: resCreateIdentity.payload,
       };
 
       const resCreateIdentityBehindImage = await dispatch(
@@ -250,7 +256,7 @@ export default function ModalCreateDriverAccount({
       );
       console.log("resCreateIdentityBehindImage", resCreateIdentityBehindImage);
 
-      //driving license
+      // //driving license
       const dataCreateDrivingLicense = {
         driverId: resCreateInfo.payload.id,
         dataBody: {
@@ -267,7 +273,7 @@ export default function ModalCreateDriverAccount({
 
       const dataCreateDlcFrontImage = {
         ...formDlcFrontImgData,
-        drivingLicenseId: resCreateDrivingLicense.payload.id,
+        drivingLicenseId: resCreateDrivingLicense.payload,
       };
 
       const resCreateDlcFrontImage = await dispatch(
@@ -277,13 +283,15 @@ export default function ModalCreateDriverAccount({
 
       const dataCreateDlcBehindImage = {
         ...formDlcBehindImgData,
-        drivingLicenseId: resCreateDrivingLicense.payload.id,
+        drivingLicenseId: resCreateDrivingLicense.payload,
       };
 
       const resCreateDlcBehindImage = await dispatch(
         createDrivingLicenseImgForDriver(dataCreateDlcBehindImage)
       );
       console.log("resCreateDlcBehindImage", resCreateDlcBehindImage);
+
+      toast.success("Tạo tài khoản thành công!");
     } catch (error) {
       console.error("Error occurred:", error);
       toast.error("Có lỗi xảy ra khi tạo tài khoản!");

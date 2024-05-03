@@ -46,7 +46,7 @@ const SecondStageCreate: React.FC<SecondStageProps> = ({
     const file = acceptedFiles[0];
     setFormIdentityFrontImageData({
       ...formIdentityFrontImageData,
-      // file: file,
+      file: file,
     });
     previewFrontImage(file);
   };
@@ -82,7 +82,7 @@ const SecondStageCreate: React.FC<SecondStageProps> = ({
     setImageFront("");
     setFormIdentityFrontImageData({
       ...formIdentityFrontImageData,
-      // file: "",
+      file: "",
     });
   };
 
@@ -93,7 +93,7 @@ const SecondStageCreate: React.FC<SecondStageProps> = ({
     const file = acceptedFiles[0];
     setFormIdentityBehindImageData({
       ...formIdentityBehindImageData,
-      // file: file,
+      file: file,
     });
     previewBehindImage(file);
   };
@@ -129,7 +129,7 @@ const SecondStageCreate: React.FC<SecondStageProps> = ({
     setImageBehind("");
     setFormIdentityBehindImageData({
       ...formIdentityBehindImageData,
-      // file: "",
+      file: "",
     });
   };
 
@@ -161,16 +161,6 @@ const SecondStageCreate: React.FC<SecondStageProps> = ({
             label="Quốc tịch"
             name="nationality"
             value={formIdentityData.nationality}
-            handleOnChange={handleOnChange}
-            required={true}
-          />
-        </div>
-
-        <div className="w-full">
-          <InputTextField
-            label="Số điện thoại"
-            name="phoneNumber"
-            value={formIdentityData.phoneNumber}
             handleOnChange={handleOnChange}
             required={true}
           />

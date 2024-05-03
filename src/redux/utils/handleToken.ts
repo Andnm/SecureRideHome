@@ -16,11 +16,24 @@ export const getTokenFromSessionStorage = (): string | null => {
   return token;
 };
 
-export const getConfigHeader = () => {
+export const getJsonConfigHeader = () => {
   const token = getTokenFromSessionStorage();
   const configHeader = {
     headers: {
       "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return configHeader;
+};
+
+export const getFormDataConfigHeader = () => {
+  const token = getTokenFromSessionStorage();
+  const configHeader = {
+    headers: {
+      "Content-Type": "multipart/form-data",
       Accept: "application/json",
       Authorization: `Bearer ${token}`,
     },
