@@ -7,14 +7,14 @@ import AdminSpinnerLoading from "@/src/components/loading/AdminSpinnerLoading/pa
 import { getAllUserByAdmin } from "@/src/redux/features/userSlice";
 import toast from "react-hot-toast";
 import ManageAccountHeader from "./_components/header";
-import SupportTable from "./_components/table";
+import AccountTable from "./_components/table";
 
 const ManageAccount = () => {
   const dispatch = useAppDispatch();
   const [dataTable, setDataTable] = React.useState<any[]>([]);
   const [originalDataTable, setOriginalDataTable] = React.useState<any[]>([]);
   const [totalObject, setTotalObject] = React.useState(1);
-  const { loadingSupport } = useAppSelector((state) => state.support);
+  const { loadingUser } = useAppSelector((state) => state.user);
 
   //pagination
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -44,17 +44,17 @@ const ManageAccount = () => {
     <Card className="p-4 manager-project">
       <ManageAccountHeader />
 
-      {loadingSupport ? (
+      {loadingUser ? (
         <AdminSpinnerLoading />
       ) : (
         <>
-          <SupportTable
+          <AccountTable
             currentPage={currentPage}
             onPageChange={onPageChange}
             totalObject={totalObject}
             dataTable={dataTable}
             setDataTable={setDataTable}
-            loadingUser={loadingSupport}
+            loadingUser={loadingUser}
           />
         </>
       )}

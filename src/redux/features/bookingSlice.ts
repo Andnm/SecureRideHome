@@ -36,9 +36,8 @@ export const getAllBookingForAdmin = createAsyncThunk(
     async (dataBody: any, thunkAPI) => {
       const { pageIndex, pageSize } = dataBody;
       try {
-        //api bị lỗi nên tạm thời sài for customer
         const response = await http.get<any>(
-          `/api/Booking/ForCustomer?PageIndex=${pageIndex}&PageSize=${pageSize}&SortKey=DateCreated&SortOrder=DESC`,
+          `/api/Booking/ForAdmin?PageIndex=${pageIndex}&PageSize=${pageSize}&SortKey=DateCreated&SortOrder=DESC`,
           getJsonConfigHeader()
         );
   

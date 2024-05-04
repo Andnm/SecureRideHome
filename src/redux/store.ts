@@ -5,13 +5,17 @@ import authReducer from "./features/authSlice";
 import userReducer from "./features/userSlice";
 import supportReducer from "./features/supportSlice";
 import bookingReducer from "./features/bookingSlice";
+import identityCardReducer from "./features/identityCardSlice";
+import drivingLicenseReducer from "./features/drivingLicenseSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     support: supportReducer,
     user: userReducer,
-    booking: bookingReducer
+    booking: bookingReducer,
+    identityCard: identityCardReducer,
+    drivingLicense: drivingLicenseReducer,
   },
 });
 

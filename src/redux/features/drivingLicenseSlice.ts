@@ -73,6 +73,44 @@ export const createDrivingLicenseImgForDriver = createAsyncThunk(
   }
 );
 
+export const getDlcByAdmin = createAsyncThunk(
+  "drivingLicense/getDlcByAdmin",
+  async (driverId: string, thunkAPI) => {
+    try {
+      const response = await http.get<any>(
+        `/api/DrivingLicense/ByAdmin/${driverId}`,
+        getJsonConfigHeader()
+      );
+
+      return response.data;
+    } catch (error) {
+      // console.log('error', error)
+      return thunkAPI.rejectWithValue(
+        (error as ErrorType)?.response?.data?.message
+      );
+    }
+  }
+);
+
+export const getDlcImageByAdmin = createAsyncThunk(
+  "drivingLicense/getDlcImageByAdmin",
+  async (drivingLicenseId: string, thunkAPI) => {
+    try {
+      const response = await http.get<any>(
+        `/api/DrivingLicense/DrivingLicenseImage/ByAdmin/${drivingLicenseId}`,
+        getJsonConfigHeader()
+      );
+
+      return response.data;
+    } catch (error) {
+      // console.log('error', error)
+      return thunkAPI.rejectWithValue(
+        (error as ErrorType)?.response?.data?.message
+      );
+    }
+  }
+);
+
 export const drivingLicenseSlice = createSlice({
   name: "drivingLicense",
   initialState,
@@ -119,6 +157,35 @@ export const drivingLicenseSlice = createSlice({
         state.error = action.payload as string;
       }
     );
+
+    //getDlcByAdmin
+    builder.addCase(getDlcByAdmin.pending, (state) => {
+      state.loadingDrivingLicense = true;
+      state.error = "";
+    });
+    builder.addCase(getDlcByAdmin.fulfilled, (state, action) => {
+      state.loadingDrivingLicense = false;
+      // state.data = action.payload;
+      state.error = "";
+    });
+    builder.addCase(getDlcByAdmin.rejected, (state, action) => {
+      state.loadingDrivingLicense = false;
+      state.error = action.payload as string;
+    });
+    //getDlcImageByAdmin
+    builder.addCase(getDlcImageByAdmin.pending, (state) => {
+      state.loadingDrivingLicense = true;
+      state.error = "";
+    });
+    builder.addCase(getDlcImageByAdmin.fulfilled, (state, action) => {
+      state.loadingDrivingLicense = false;
+      // state.data = action.payload;
+      state.error = "";
+    });
+    builder.addCase(getDlcImageByAdmin.rejected, (state, action) => {
+      state.loadingDrivingLicense = false;
+      state.error = action.payload as string;
+    });
   },
 });
 

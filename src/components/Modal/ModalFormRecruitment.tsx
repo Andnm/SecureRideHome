@@ -95,7 +95,7 @@ export default function ModalFormRecruitment({
                           <br />
                           <span className="font-semibold">
                             - Vui lòng mang theo CCCD và Bằng lái xe bản gốc,
-                            mặc áo ngắn tay có cổ, đi giầy và mang theo bút viết
+                            mặc áo ngắn tay có cổ, đi giày và mang theo bút viết
                             khi tham gia phỏng vấn
                           </span>
                           <br />

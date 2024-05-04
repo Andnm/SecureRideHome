@@ -14,6 +14,7 @@ import {
   Avatar,
 } from "@material-tailwind/react";
 import {
+  changeStatusFromEnToVn,
   formatDate,
   generateFallbackAvatar,
   getColorByProjectStatus,
@@ -34,6 +35,7 @@ import PopoverOption from "@/src/components/Popover/PopoverOption";
 import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import { GrTransaction } from "react-icons/gr";
+import ModalAccountDetail from "@/src/components/Modal/ModalAccountDetail";
 
 registerLocale("vi", vn);
 setDefaultLocale("vi");
@@ -57,21 +59,7 @@ const TABLE_HEAD = [
   { name: "", key: "" },
 ];
 
-const POPOVER_OPTION = [
-  {
-    name: "Chi tiết",
-    icon: <BiDetail />,
-    onClick: () => {},
-  },
-
-  {
-    name: "Xóa tài khoản",
-    icon: <MdOutlinePersonRemove />,
-    onClick: () => {},
-  },
-];
-
-const SupportTable: React.FC<SupportTableProps> = ({
+const AccountTable: React.FC<SupportTableProps> = ({
   totalObject,
   dataTable,
   setDataTable,
@@ -82,9 +70,12 @@ const SupportTable: React.FC<SupportTableProps> = ({
   const dispatch = useAppDispatch();
   console.log("dataTable", dataTable);
   //quản lý thông tin hiện ra
-  const [selectedSupport, setSelectedSupport] = React.useState<any | null>(
+  const [selectedAccount, setSelectedAccount] = React.useState<any | null>(
     null
   );
+
+  const [isOpenModalAccountDetail, setIsOpenModalAccountDetail] =
+    React.useState(false);
 
   return (
     <>
@@ -128,6 +119,23 @@ const SupportTable: React.FC<SupportTableProps> = ({
             const isLast = index === dataTable.length - 1;
 
             const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
+
+            const POPOVER_OPTION = [
+              {
+                name: "Chi tiết",
+                icon: <BiDetail />,
+                onClick: () => {
+                  setSelectedAccount(user);
+                  setIsOpenModalAccountDetail(true);
+                },
+              },
+
+              {
+                name: "Xóa tài khoản",
+                icon: <MdOutlinePersonRemove />,
+                onClick: () => {},
+              },
+            ];
 
             return (
               <tbody key={index}>
@@ -173,7 +181,7 @@ const SupportTable: React.FC<SupportTableProps> = ({
                   <StatusCell status={"Active"} classes={classes} />
 
                   <td className={classes}>
-                    <InfoText>{user?.role}</InfoText>
+                    <InfoText>{changeStatusFromEnToVn(user?.role)}</InfoText>
                   </td>
 
                   <td className={classes}>
@@ -192,9 +200,17 @@ const SupportTable: React.FC<SupportTableProps> = ({
         onPageChange={onPageChange}
       />
 
+      {isOpenModalAccountDetail && (
+        <ModalAccountDetail
+          open={isOpenModalAccountDetail}
+          actionClose={() => setIsOpenModalAccountDetail(false)}
+          selectedAccount={selectedAccount}
+        />
+      )}
+
       {loadingUser && <SpinnerLoading />}
     </>
   );
 };
 
-export default SupportTable;
+export default AccountTable;

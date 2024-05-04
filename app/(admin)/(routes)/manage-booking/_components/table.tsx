@@ -42,7 +42,7 @@ interface SupportTableProps {
   totalObject: any;
   dataTable: any[];
   setDataTable: React.Dispatch<React.SetStateAction<any[]>>;
-  loadingUser: boolean;
+  loadingBooking: boolean;
   currentPage: number;
   onPageChange: (page: number) => void;
 }
@@ -66,11 +66,11 @@ const POPOVER_OPTION = [
   },
 ];
 
-const SupportTable: React.FC<SupportTableProps> = ({
+const BookingTable: React.FC<SupportTableProps> = ({
   totalObject,
   dataTable,
   setDataTable,
-  loadingUser,
+  loadingBooking,
   currentPage,
   onPageChange,
 }) => {
@@ -233,9 +233,9 @@ const SupportTable: React.FC<SupportTableProps> = ({
         onPageChange={onPageChange}
       />
 
-      {loadingUser && <SpinnerLoading />}
+      {loadingBooking && <SpinnerLoading />}
     </>
   );
 };
 
-export default SupportTable;
+export default BookingTable;

@@ -3,31 +3,18 @@ import http from "../utils/https";
 import { ErrorType } from "@/src/types/error.type";
 
 import {
-  saveTokenToSessionStorage,
-  removeTokenFromSessionStorage,
-  decodeTokenToUser,
   getJsonConfigHeader,
   getFormDataConfigHeader,
 } from "../utils/handleToken";
 
-import {
-  saveUserToSessionStorage,
-  removeUserFromSessionStorage,
-} from "../utils/handleUser";
-import {
-  getOtpFromSessionStorage,
-  removeOtpFromSessionStorage,
-  saveOtpToSessionStorage,
-} from "../utils/handleOtp";
-
-export interface SupportState {
-  isLogin: boolean;
+export interface IdentityCardState {
+  data: boolean;
   loadingIdentityCard: boolean;
   error: string;
 }
 
-const initialState: SupportState = {
-  isLogin: false,
+const initialState: IdentityCardState = {
+  data: false,
   loadingIdentityCard: false,
   error: "",
 };
@@ -73,8 +60,46 @@ export const createIdentityCardImageByAdmin = createAsyncThunk(
   }
 );
 
+export const getIdentityCardByAdmin = createAsyncThunk(
+  "identityCard/getIdentityCardByAdmin",
+  async (userId: string, thunkAPI) => {
+    try {
+      const response = await http.get<any>(
+        `/api/IdentityCard/ByAdmin/${userId}`,
+        getJsonConfigHeader()
+      );
+
+      return response.data;
+    } catch (error) {
+      // console.log('error', error)
+      return thunkAPI.rejectWithValue(
+        (error as ErrorType)?.response?.data?.message
+      );
+    }
+  }
+);
+
+export const getIdentityCardImageByAdmin = createAsyncThunk(
+  "identityCard/getIdentityCardImageByAdmin",
+  async (identityCardId: string, thunkAPI) => {
+    try {
+      const response = await http.get<any>(
+        `/api/IdentityCard/IdentityCardImage/ByAdmin/${identityCardId}`,
+        getJsonConfigHeader()
+      );
+
+      return response.data;
+    } catch (error) {
+      // console.log('error', error)
+      return thunkAPI.rejectWithValue(
+        (error as ErrorType)?.response?.data?.message
+      );
+    }
+  }
+);
+
 export const identityCardSlice = createSlice({
-  name: "identity",
+  name: "identityCard",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -103,6 +128,34 @@ export const identityCardSlice = createSlice({
       state.error = "";
     });
     builder.addCase(createIdentityCardByAdmin.rejected, (state, action) => {
+      state.loadingIdentityCard = false;
+      state.error = action.payload as string;
+    });
+    //getIdentityCardByAdmin
+    builder.addCase(getIdentityCardByAdmin.pending, (state) => {
+      state.loadingIdentityCard = true;
+      state.error = "";
+    });
+    builder.addCase(getIdentityCardByAdmin.fulfilled, (state, action) => {
+      state.loadingIdentityCard = false;
+      // state.data = action.payload;
+      state.error = "";
+    });
+    builder.addCase(getIdentityCardByAdmin.rejected, (state, action) => {
+      state.loadingIdentityCard = false;
+      state.error = action.payload as string;
+    });
+    //getIdentityCardImageByAdmin
+    builder.addCase(getIdentityCardImageByAdmin.pending, (state) => {
+      state.loadingIdentityCard = true;
+      state.error = "";
+    });
+    builder.addCase(getIdentityCardImageByAdmin.fulfilled, (state, action) => {
+      state.loadingIdentityCard = false;
+      // state.data = action.payload;
+      state.error = "";
+    });
+    builder.addCase(getIdentityCardImageByAdmin.rejected, (state, action) => {
       state.loadingIdentityCard = false;
       state.error = action.payload as string;
     });

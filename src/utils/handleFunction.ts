@@ -205,21 +205,12 @@ export const changeStatusFromEnToVn = (status: string): string => {
       return "Đang chờ";
     case "selected":
       return "Đã được chọn";
+    case "driver":
+      return "Tài xế";
+    case "customer":
+      return "Khách hàng";
     default:
       return "Trạng thái không xác định";
-  }
-};
-
-export const changeStatusPitchingFromEnToVn = (status: string): string => {
-  switch (status?.toLowerCase()) {
-    case "pending":
-      return "Đang chờ phê duyệt";
-    case "rejected":
-      return "Đã bị từ chối";
-    case "selected":
-      return "Đã được chọn";
-    default:
-      return "Không xác định";
   }
 };
 
