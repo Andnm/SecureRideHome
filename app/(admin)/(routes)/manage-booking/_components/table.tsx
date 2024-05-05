@@ -34,6 +34,7 @@ import PopoverOption from "@/src/components/Popover/PopoverOption";
 import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import { GrTransaction } from "react-icons/gr";
+import { Hint } from "@/src/components/Tooltip/Hint";
 
 registerLocale("vi", vn);
 setDefaultLocale("vi");
@@ -186,36 +187,48 @@ const BookingTable: React.FC<SupportTableProps> = ({
                   </td>
 
                   <td className={classes}>
+                    <Hint
+                      sideOffset={10}
+                      description={`${booking?.searchRequest?.pickupAddress}`}
+                      side={"top"}
+                    >
+                      <InfoText>
+                        {truncateString(
+                          booking?.searchRequest?.pickupAddress,
+                          15
+                        )}
+                      </InfoText>
+                    </Hint>
+                  </td>
+
+                  <td className={classes}>
                     <InfoText>
-                      {truncateString(
-                        booking?.searchRequest?.pickupAddress,
-                        15
-                      )}
+                      {convertToVietnamTime(booking?.pickUpTime)}
                     </InfoText>
                   </td>
 
                   <td className={classes}>
-                    <InfoText>{convertToVietnamTime(booking?.pickUpTime)}</InfoText>
+                    <Hint
+                      sideOffset={10}
+                      description={`${booking?.searchRequest?.dropOffAddress}`}
+                      side={"top"}
+                    >
+                      <InfoText>
+                        {truncateString(
+                          booking?.searchRequest?.dropOffAddress,
+                          15
+                        )}
+                      </InfoText>
+                    </Hint>
                   </td>
 
                   <td className={classes}>
                     <InfoText>
-                      {truncateString(
-                        booking?.searchRequest?.dropOffAddress,
-                        20
-                      )}
+                      {convertToVietnamTime(booking?.dropOffTime)}
                     </InfoText>
-                  </td>
-
-                  <td className={classes}>
-                    <InfoText>{convertToVietnamTime(booking?.dropOffTime)}</InfoText>
                   </td>
 
                   <StatusCell status={booking?.status} classes={classes} />
-
-                  <td className={classes}>
-                    <InfoText>{booking?.role}</InfoText>
-                  </td>
 
                   <td className={classes}>
                     <PopoverOption solutions={POPOVER_OPTION} />

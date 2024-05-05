@@ -30,7 +30,7 @@ const LoginPage = () => {
     setIsLoading(true);
     dispatch(login(formData)).then((res) => {
       console.log("res", res);
-      router.push('/dashboard');
+      router.push("/dashboard");
       setIsLoading(false);
     });
   };
@@ -59,7 +59,10 @@ const LoginPage = () => {
                 <p className="w-full text-3xl font-medium text-center leading-snug font-serif">
                   Chào mừng bạn quay lại
                 </p>
-                <div className="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
+                <form
+                  onSubmit={handleSubmit}
+                  className="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8"
+                >
                   <div className="relative">
                     <p className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">
                       Email
@@ -95,14 +98,14 @@ const LoginPage = () => {
                   </div>
                   <div className="relative">
                     <button
+                      type="submit"
                       className="w-full cursor-pointer inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500
                     rounded-lg transition duration-200 hover:bg-indigo-600 ease"
-                      onClick={handleSubmit}
                     >
                       Đăng nhập
                     </button>
                   </div>
-                </div>
+                </form>
               </div>
               <Dot />
             </div>

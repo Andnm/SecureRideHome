@@ -50,7 +50,7 @@ interface SupportTableProps {
 }
 
 const TABLE_HEAD = [
-  { name: "Người gửi", key: "fullname" },
+  { name: "Tài khoản", key: "fullname" },
   { name: "Số điện thoại", key: "phoneNumber" },
   { name: "Giới tính", key: "gender" },
   { name: "Ngày sinh", key: "dob" },

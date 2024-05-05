@@ -406,18 +406,20 @@ export const convertToVietnamDate = (dateString: string) => {
   return vietnamDate;
 };
 
-export const convertToVietnamTime = (utcTime: string) => {
-  const dateUtc = new Date(utcTime);
+export const convertToVietnamTime = (utcTime: string | null) => {
+  if (!utcTime || utcTime === "0001-01-01T00:00:00") {
+    return '';
+  }
 
-  const vietnamOffset = 7 * 60;
-  const vietnamTime = new Date(dateUtc.getTime() + vietnamOffset * 60000);
+  const dateUtc = new Date(utcTime);
+  const vietnamTime = new Date(dateUtc.getTime());
 
   const formattedTime = `${("0" + vietnamTime.getHours()).slice(-2)}:${(
     "0" + vietnamTime.getMinutes()
   ).slice(-2)} - ${("0" + vietnamTime.getDate()).slice(-2)}/${(
-    "0" +
-    (vietnamTime.getMonth() + 1)
+    "0" + (vietnamTime.getMonth() + 1)
   ).slice(-2)}/${vietnamTime.getFullYear()}`;
 
   return formattedTime;
 };
+
