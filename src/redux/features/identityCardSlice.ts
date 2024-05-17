@@ -25,7 +25,7 @@ export const createIdentityCardByAdmin = createAsyncThunk(
     const { driverId, dataBody } = data;
     try {
       const response = await http.post<any>(
-        `/api/IdentityCard/ByAdmin/${driverId}`,
+        `/api/Admin/IdentityCard/${driverId}`,
         dataBody,
         getJsonConfigHeader()
       );
@@ -45,7 +45,7 @@ export const createIdentityCardImageByAdmin = createAsyncThunk(
   async (data: any, thunkAPI) => {
     try {
       const response = await http.post<any>(
-        `/api/IdentityCard/IdentityCardImage/ByAdmin`,
+        `/api/Admin/IdentityCard/IdentityCardImage`,
         data,
         getFormDataConfigHeader()
       );
@@ -65,7 +65,7 @@ export const getIdentityCardByAdmin = createAsyncThunk(
   async (userId: string, thunkAPI) => {
     try {
       const response = await http.get<any>(
-        `/api/IdentityCard/ByAdmin/${userId}`,
+        `/api/Admin/IdentityCard/${userId}`,
         getJsonConfigHeader()
       );
 
@@ -84,7 +84,7 @@ export const getIdentityCardImageByAdmin = createAsyncThunk(
   async (identityCardId: string, thunkAPI) => {
     try {
       const response = await http.get<any>(
-        `/api/IdentityCard/IdentityCardImage/ByAdmin/${identityCardId}`,
+        `/api/Admin/IdentityCard/IdentityCardImage/${identityCardId}`,
         getJsonConfigHeader()
       );
 

@@ -26,7 +26,7 @@ export const getAllUserByAdmin = createAsyncThunk(
     const { pageIndex, pageSize } = dataBody;
     try {
       const response = await http.get<any>(
-        `/api/Customer/GetUserByAdmin?PageIndex=${pageIndex}&PageSize=${pageSize}&SortKey=DateCreated&SortOrder=DESC`,
+        `/api/Admin/User/All?PageIndex=${pageIndex}&PageSize=${pageSize}&SortKey=DateCreated&SortOrder=DESC`,
         getJsonConfigHeader()
       );
 
@@ -46,7 +46,7 @@ export const createDriverAccountByAdmin = createAsyncThunk(
     try {
       console.log("dataBody", dataBody);
       const response = await http.post<any>(
-        `/api/Driver/RegisterByAdmin`,
+        `/api/Admin/Driver/Register`,
         dataBody,
         getFormDataConfigHeader()
       );

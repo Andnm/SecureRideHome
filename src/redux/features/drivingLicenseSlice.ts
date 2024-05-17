@@ -38,7 +38,7 @@ export const createDrivingLicenseForDriverByAdmin = createAsyncThunk(
     const { driverId, dataBody } = data;
     try {
       const response = await http.post<any>(
-        `/api/DrivingLicense/ByAdmin/${driverId}`,
+        `/api/Admin/DrivingLicense/${driverId}`,
         dataBody,
         getJsonConfigHeader()
       );
@@ -58,7 +58,7 @@ export const createDrivingLicenseImgForDriver = createAsyncThunk(
   async (data: any, thunkAPI) => {
     try {
       const response = await http.post<any>(
-        `/api/DrivingLicense/ByAdmin/DrivingLicenseImage`,
+        `/api/Admin/DrivingLicense/DrivingLicenseImage`,
         data,
         getFormDataConfigHeader(),
       );
@@ -78,7 +78,7 @@ export const getDlcByAdmin = createAsyncThunk(
   async (driverId: string, thunkAPI) => {
     try {
       const response = await http.get<any>(
-        `/api/DrivingLicense/ByAdmin/${driverId}`,
+        `/api/Admin/DrivingLicense/${driverId}`,
         getJsonConfigHeader()
       );
 
@@ -97,7 +97,7 @@ export const getDlcImageByAdmin = createAsyncThunk(
   async (drivingLicenseId: string, thunkAPI) => {
     try {
       const response = await http.get<any>(
-        `/api/DrivingLicense/DrivingLicenseImage/ByAdmin/${drivingLicenseId}`,
+        `/api/Admin/DrivingLicense/DrivingLicenseImage/${drivingLicenseId}`,
         getJsonConfigHeader()
       );
 
