@@ -6,6 +6,7 @@ import { login } from "@/src/redux/features/authSlice";
 import AdminSpinnerLoading from "@/src/components/loading/AdminSpinnerLoading/page";
 import SpinnerLoading from "@/src/components/loading/SpinnerLoading/page";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -29,8 +30,12 @@ const LoginPage = () => {
     e.preventDefault();
     setIsLoading(true);
     dispatch(login(formData)).then((res) => {
-      console.log("res", res);
-      router.push("/dashboard");
+      if (login.fulfilled.match(res)) {
+        router.push("/dashboard");
+      } else {
+        toast.error(`${res.payload}`);
+      }
+
       setIsLoading(false);
     });
   };

@@ -292,6 +292,7 @@ export default function ModalCreateDriverAccount({
       console.log("resCreateDlcBehindImage", resCreateDlcBehindImage);
 
       toast.success("Tạo tài khoản thành công!");
+      actionClose();
     } catch (error) {
       console.error("Error occurred:", error);
       toast.error("Có lỗi xảy ra khi tạo tài khoản!");
